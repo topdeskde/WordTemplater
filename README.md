@@ -1,7 +1,4 @@
-# docx-templater
-Use docx files as templates
+# WordTemplater
+Replaces placeholders with values in Word documents.
 
-
-Useful links:
-* http://blogs.msdn.com/b/brian_jones/archive/2005/07/05/435772.aspx
-* http://blogs.msdn.com/b/brian_jones/archive/2005/07/18/intro-to-word-xml-part-2-simple-formatting.aspx
+Usage: WordTemplater Template.docx UsefulDocument.docx $var1 FirstName $var2 LastName
