@@ -1,21 +1,33 @@
 package main
 
+import "github.com/alexflint/go-arg"
+import "strings"
+
 var (
-	name    = "DocX Templater"
-	version = "0.0.3"
+	name    = "Word Templater"
+	version = "1.0.0"
 )
+
+var args struct {
+	Input        string   `arg:"positional,required"`
+	Output       string   `arg:"positional,required"`
+	ReplacePairs []string `arg:"positional"`
+}
 
 func main() {
 	setupLogging()
 	setupDebugLogging()
+	Msg.Printf("%s %s\n\n", name, version)
+	arg.MustParse(&args)
+	Msg.Printf("Creating %s from %s with %s", args.Output, args.Input, args.ReplacePairs)
 
-	Msg.Println(name, version)
-	docx, err := LoadDocx("HelloWorld.docx")
+	docx, err := LoadDocx(args.Input)
 	if err != nil {
 		Error.Println(err)
 	}
 
-	cleanWordXML(docx.WordXML)
+	replacer := strings.NewReplacer(args.ReplacePairs...)
+	docx.WordXML = replacer.Replace(docx.WordXML)
 
-	docx.WriteToFile("HelloWorld-edited.docx")
+	docx.WriteToFile(args.Output)
 }
